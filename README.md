@@ -72,8 +72,9 @@ mvn spring-boot:run
 ```
 ---
 ## 🌐 Sample API Endpoints
-All secured endpoints require:
-Authorization: Bearer <your-jwt-token>
+
+All secured endpoints require a valid JWT in the header:  
+`Authorization: Bearer <your-jwt-token>`
 ###  User (Authentication & Management)
 - POST `/api/auth/login` Authenticate a user (admin or voter) and receive a JWT.
 - POST `/api/auth/register`register voter to system.(Admin only)
