@@ -12,7 +12,9 @@ public class Candidate {
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     private Long candidate_id;
     private String name;
+    private String city;
     private String party;
+
 
     @ManyToOne
     @JoinColumn(name = "election_id", nullable = false)
@@ -25,6 +27,10 @@ public class Candidate {
 
     public void setCandidate_id(Long candidate_id) {
         this.candidate_id = candidate_id;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public void setName(String name) {
@@ -61,5 +67,9 @@ public class Candidate {
 
     public List<Vote> getVotes() {
         return votes;
+    }
+
+    public String getCity() {
+        return city;
     }
 }
