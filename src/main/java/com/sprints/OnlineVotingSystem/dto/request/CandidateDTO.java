@@ -5,18 +5,23 @@ public class CandidateDTO {
     private String name;
     private String party;
     private Long electionId;
-
+    private String city;
     public CandidateDTO() {
     }
 
-    public CandidateDTO(String name, String party, Long electionId) {
+    public CandidateDTO(String name, String party, Long electionId,String city) {
         this.name = name;
         this.party = party;
         this.electionId = electionId;
+        this.city = city;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public void setParty(String party) {
@@ -37,5 +42,9 @@ public class CandidateDTO {
 
     public Long getElectionId() {
         return electionId;
+    }
+
+    public String getCity() {
+        return city;
     }
 }
