@@ -9,8 +9,10 @@ import java.util.Optional;
 
 public interface UserService {
     UserResponseDTO registerUser(UserRegisterDTO userRegisterDTO);
+    UserResponseDTO assignVoterToElection(long userId,long electionId );
     Optional<User> getUserById(Long id);
     Optional<User> getUserByEmail(String email);
     List<UserResponseDTO> getAllUsers();
     void deleteUser(Long id);
+
 }

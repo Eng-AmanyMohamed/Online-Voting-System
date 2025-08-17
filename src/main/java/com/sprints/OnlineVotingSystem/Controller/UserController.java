@@ -28,6 +28,13 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
+    @PutMapping("/assign/{id}")
+    @PreAuthorize("hasRole('Admin')")
+    public ResponseEntity<UserResponseDTO> assignVoterToElection(@PathVariable Long id , @RequestParam long electionID) {
+        UserResponseDTO createdUser = userService.assignVoterToElection(id,electionID);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+    }
+
     @GetMapping
     @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
