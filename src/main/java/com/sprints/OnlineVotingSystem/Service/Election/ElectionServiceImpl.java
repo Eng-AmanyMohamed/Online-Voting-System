@@ -9,7 +9,9 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 @Service
 @Transactional
@@ -111,6 +113,45 @@ public class ElectionServiceImpl implements ElectionService{
             return electionRepository.findById(electionId)
                     .orElseThrow(() -> new EntityNotFoundException("Election not found after update"));
         }
+    @Override
+    public Map<String, Object> getElectionResults(Long electionId) {
+        // Check if election exists
+        Election election = electionRepository.findById(electionId)
+                .orElseThrow(() -> new EntityNotFoundException("Election not found with id: " + electionId));
+
+        // Get vote counts for each candidate
+        List<Map<String, Object>> candidateVotes = electionRepository.getVoteCountsByElection(electionId);
+
+        // Get total votes
+        int totalVotes = electionRepository.getTotalVotesByElection(electionId);
+
+        // Calculate percentages and find winner
+        Map<String, Object> winner = null;
+        int maxVotes = 0;
+
+        for (Map<String, Object> candidate : candidateVotes) {
+            int voteCount = ((Long) candidate.get("voteCount")).intValue();
+            double percentage = totalVotes > 0 ? (voteCount * 100.0) / totalVotes : 0.0;
+            candidate.put("percentage", Math.round(percentage * 100.0) / 100.0);
+
+            if (voteCount > maxVotes) {
+                maxVotes = voteCount;
+                winner = candidate;
+            }
+        }
+
+        // Prepare result
+        Map<String, Object> result = new HashMap<>();
+        result.put("electionId", election.getElection_id());
+        result.put("electionTitle", election.getTitle());
+        result.put("startTime", election.getStartTime());
+        result.put("endTime", election.getEndTime());
+        result.put("totalVotes", totalVotes);
+        result.put("candidateResults", candidateVotes);
+        result.put("winner", winner);
+
+        return result;
+    }
     }
 
 

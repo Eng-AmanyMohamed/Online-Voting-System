@@ -4,6 +4,7 @@ package com.sprints.OnlineVotingSystem.Controller;
 import com.sprints.OnlineVotingSystem.Service.Election.ElectionService;
 import com.sprints.OnlineVotingSystem.dto.request.ElectionDTO;
 import com.sprints.OnlineVotingSystem.model.Election;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/elections")
@@ -96,5 +98,17 @@ public class ElectionController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND)
                         .body(null));
+    }
+    @GetMapping("/{id}/results")
+    @PreAuthorize("hasAnyRole('ADMIN','VOTER')")
+    public ResponseEntity<Map<String, Object>> getElectionResults(@PathVariable Long id) {
+        try {
+            Map<String, Object> results = electionService.getElectionResults(id);
+            return ResponseEntity.ok(results);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
     }
 }

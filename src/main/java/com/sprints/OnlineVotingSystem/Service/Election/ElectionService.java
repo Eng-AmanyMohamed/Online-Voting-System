@@ -2,9 +2,11 @@ package com.sprints.OnlineVotingSystem.Service.Election;
 
 import com.sprints.OnlineVotingSystem.dto.request.ElectionDTO;
 import com.sprints.OnlineVotingSystem.model.Election;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface ElectionService {
@@ -30,4 +32,6 @@ public interface ElectionService {
     boolean existsConflictingElection(Long electionId, LocalDateTime startTime, LocalDateTime endTime);
 
     Election updateElectionEndTime(Long electionId, LocalDateTime newEndTime);
+
+    Map<String, Object> getElectionResults(Long electionId);
 }

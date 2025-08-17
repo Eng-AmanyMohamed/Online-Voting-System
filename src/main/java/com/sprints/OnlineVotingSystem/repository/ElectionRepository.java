@@ -9,9 +9,16 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 @Repository
 public interface ElectionRepository extends CrudRepository<Election, Long> {
+    @Query("SELECT new map(c.candidate_id as candidateId, c.name as candidateName, c.party as party, COUNT(v.id) as voteCount) " +
+            "FROM Vote v JOIN v.candidate c WHERE v.election.election_id = :electionId GROUP BY c.id, c.name, c.party")
+    List<Map<String, Object>> getVoteCountsByElection(@Param("electionId") Long electionId);
+
+    @Query("SELECT COUNT(v.vote_id) FROM Vote v WHERE v.election.election_id = :electionId")
+    int getTotalVotesByElection(@Param("electionId") Long electionId);
 
 
     @Query("SELECT e FROM Election e WHERE :currentTime BETWEEN e.startTime AND e.endTime")
