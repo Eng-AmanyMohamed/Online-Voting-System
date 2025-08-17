@@ -1,4 +1,4 @@
-package com.sprints.OnlineVotingSystem.exception;
+package com.sprints.OnlineVotingSystem.Config;
 
 import com.sprints.OnlineVotingSystem.exception.customException.*;
 import org.springframework.http.HttpStatus;
@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-public class globalExceptionHandler extends RuntimeException {
+public class globalExceptionHandler{
     @ExceptionHandler(DataNotFoundException.class)
     public ResponseEntity<String> handleDataNotFound(DataNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
