@@ -43,7 +43,7 @@ public class CandidateConrtoller {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{election_id}")
+    @GetMapping("/get-all/{election_id}")
     public ResponseEntity<List<CandidateDTO>> getAllCandidatesPerElection(@PathVariable long election_id) {
         return ResponseEntity.ok(candidateService.getAllCandidatesPerElection(election_id));
     }
