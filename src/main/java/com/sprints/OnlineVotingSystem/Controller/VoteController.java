@@ -1,8 +1,11 @@
 package com.sprints.OnlineVotingSystem.Controller;
 
+import com.sprints.OnlineVotingSystem.Service.User.UserService;
 import com.sprints.OnlineVotingSystem.Service.Vote.VoteServiceImpl;
 import com.sprints.OnlineVotingSystem.dto.request.VoteDTO;
+import com.sprints.OnlineVotingSystem.model.User;
 import com.sprints.OnlineVotingSystem.model.Vote;
+import com.sprints.OnlineVotingSystem.util.JwtService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -11,25 +14,33 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/{id}/elections/{electionId}/votes")
+@RequestMapping("/api/elections/{electionId}/votes")
 public class VoteController {
 
     private final VoteServiceImpl voteService;
+    private final UserService userService;
+    private final JwtService jwtService;
 
-    public VoteController(VoteServiceImpl voteService) {
+    public VoteController(VoteServiceImpl voteService, UserService userService, JwtService jwtService) {
         this.voteService = voteService;
+        this.userService = userService;
+        this.jwtService = jwtService;
     }
 
-    @PreAuthorize("hasRole('VOTER')")
+    @PreAuthorize("hasRole('Voter')")
     @PostMapping
     public ResponseEntity<?> castVote(
-            @PathVariable Long id,
+            @RequestHeader("Authorization") String authHeader,
             @PathVariable Long electionId,
             @RequestBody @Valid VoteDTO voteRequest
     ) {
-        Optional<Vote> vote = voteService.vote(id, voteRequest.getCandidateId(), electionId);
+        String token = authHeader.substring(7);
+        String username = jwtService.extractUsername(token);
+        User user = userService.getUserByUsername(username);
 
-        return ResponseEntity.ok("Vote cast successfully for candidate: " + vote);
+        Optional<Vote> vote = voteService.vote(user.getUser_id(), voteRequest.getCandidateId(), electionId);
+
+        return ResponseEntity.ok("Vote cast successfully");
     }
 
 //

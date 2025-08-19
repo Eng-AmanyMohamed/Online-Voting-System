@@ -28,14 +28,14 @@ public class ElectionController {
     //Admin
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<Election> createElection(@Valid @RequestBody ElectionDTO electionDTO) {
         Election savedElection = electionService.createElection(electionDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedElection);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<Election> updateElection(@PathVariable Long id,
                                                    @Valid @RequestBody ElectionDTO electionDTO) {
         Election updatedElection = electionService.updateElection(id, electionDTO);
@@ -43,7 +43,7 @@ public class ElectionController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<Void> deleteElection(@PathVariable Long id) {
         electionService.deleteElection(id);
         return ResponseEntity.noContent().build();

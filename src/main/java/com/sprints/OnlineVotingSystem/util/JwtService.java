@@ -9,28 +9,29 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
+import java.util.Base64;
 import java.util.Date;
 import java.util.function.Function;
 
 @Component
 public class JwtService {
-    //@Value("${secret.key}")
+//    @Value("${secret.key}")
     private String SECRET_KEY = "dGhpc19pc19hX3ZlcnlfbG9uZ19iYXNlNjRfc2VjcmV0X2tleV9mb3JfSFMtMjU2X2F1dGhfc2lnbg";
 
     Key getKey(){
         return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
     }
 
-    public String generateToken(String username){
+    public String generateToken(String username) {
         return Jwts.builder()
                 .setSubject(username)
                 .signWith(getKey())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis()+ 36_000_000))
+                .setExpiration(new Date(System.currentTimeMillis() + 36_000_000))
                 .compact();
     }
 
-    private Key getSignKey(){
+    private Key getSignKey() {
         return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
     }
 
@@ -51,9 +52,9 @@ public class JwtService {
                 .getBody();
     }
 
-    public boolean isTokenValid(String token , UserDetails userDetails){
+    public boolean isTokenValid(String token, UserDetails userDetails) {
         final String userName = extractUsername(token);
-        return (userName.equals(userDetails.getUsername()))&& !isTokenExpired(token);
+        return (userName.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 
     private boolean isTokenExpired(String token) {
@@ -61,6 +62,6 @@ public class JwtService {
     }
 
     private Date extractExpiration(String token) {
-        return extractClaim(token , Claims::getExpiration);
+        return extractClaim(token, Claims::getExpiration);
     }
 }
