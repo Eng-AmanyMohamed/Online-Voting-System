@@ -17,6 +17,9 @@ public class Election {
     private LocalDateTime startTime;
     @Column(name = "end_time",nullable = false)
     private LocalDateTime endTime;
+    @Column(name = "city",nullable = false)
+    private String city;
+
 
     @OneToMany(mappedBy = "election")
     private List<Candidate> candidates = new ArrayList<>();
@@ -26,6 +29,7 @@ public class Election {
 
     @OneToMany(mappedBy = "election")
     private List<Vote> votes = new ArrayList<>();
+
 
     public Election() {
     }
@@ -84,5 +88,13 @@ public class Election {
 
     public List<Vote> getVotes() {
         return votes;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 }
