@@ -8,8 +8,8 @@ import lombok.Data;
 //to login users
 @Data
 public class AuthRequest {
-    @NotBlank @Email
-    private String email;
+    @NotBlank
+    private String username;
     @Size(min = 8)
     private String password;
 }
