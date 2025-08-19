@@ -14,8 +14,8 @@ import java.util.function.Function;
 
 @Component
 public class JwtService {
-    @Value("${secret.key}")
-    private String SECRET_KEY;
+    //@Value("${secret.key}")
+    private String SECRET_KEY = "dGhpc19pc19hX3ZlcnlfbG9uZ19iYXNlNjRfc2VjcmV0X2tleV9mb3JfSFMtMjU2X2F1dGhfc2lnbg";
 
     Key getKey(){
         return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());

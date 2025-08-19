@@ -22,12 +22,4 @@ public class AppConfig {
                 userRepository.findByUsername(username).orElseThrow(() -> new DataNotFoundException("User not found"));
     }
 
-    @Bean
-    PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
-    @Bean
-    AuthenticationManager authenticationManager(AuthenticationConfiguration context) throws Exception {
-        return context.getAuthenticationManager();
-    }
 }
