@@ -25,28 +25,15 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
-    private final UserDetailsService userDetailsService;
-
-    @Bean PasswordEncoder passwordEncoder() { return new BCryptPasswordEncoder(); }
-
-    @Bean AuthenticationManager authenticationManager() {
-        var provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userDetailsService);
-        provider.setPasswordEncoder(passwordEncoder());
-        return new ProviderManager(provider);
-    }
-
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable)
-                .cors(Customizer.withDefaults())
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/users/register").permitAll()
-                        .anyRequest().authenticated()
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http.csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(
+                        request->request.requestMatchers("/api/auth/register","/api/auth/login").permitAll()
+                                .anyRequest().authenticated()
                 )
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-        return http.build();
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
     }
 
 }
