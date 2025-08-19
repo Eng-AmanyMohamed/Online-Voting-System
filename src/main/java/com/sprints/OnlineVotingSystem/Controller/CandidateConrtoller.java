@@ -21,29 +21,31 @@ public class CandidateConrtoller {
     }
 
     @PostMapping("/add")
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasAuthority('Admin')")
     public ResponseEntity<CandidateDTO> addCandidate(@Valid @RequestBody CandidateDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(candidateService.addCandidate(dto));
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('Admin') or hasAuthority('User')")
     public ResponseEntity<CandidateDTO> getCandidateById(@PathVariable Long id) {
         return ResponseEntity.ok(candidateService.getCandidateById(id));
     }
 
     @PutMapping("/update/{id}")
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasAuthority('Admin')")
     public ResponseEntity<CandidateDTO> updateCandidate(@Valid @RequestBody CandidateDTO dto, @PathVariable Long id) {
         return ResponseEntity.ok(candidateService.updateCandidate(dto, id));
     }
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasAuthority('Admin')")
     public ResponseEntity<CandidateDTO> deleteCandidate(@PathVariable Long id) {
         candidateService.deleteCandidate(id);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/get-all/{election_id}")
+    @GetMapping("/all/{election_id}")
+    @PreAuthorize("hasAuthority('Admin') or hasAuthority('User')")
     public ResponseEntity<List<CandidateDTO>> getAllCandidatesPerElection(@PathVariable long election_id) {
         return ResponseEntity.ok(candidateService.getAllCandidatesPerElection(election_id));
     }

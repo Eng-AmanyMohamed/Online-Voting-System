@@ -1,4 +1,3 @@
-
 package com.sprints.OnlineVotingSystem.util;
 
 import com.sprints.OnlineVotingSystem.repository.UserRepository;
@@ -18,10 +17,11 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         var user = userRepo.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),
                 user.getPassword(),
-                List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()))
+                List.of(new SimpleGrantedAuthority(user.getRole().name()))
         );
     }
 }
