@@ -21,6 +21,10 @@ public class CandidateServiceImpl implements CandidateService {
     private CandidateRepository candidateRepository;
     private ElectionRepository electionRepository;
 
+    public CandidateServiceImpl(CandidateRepository candidateRepository, ElectionRepository electionRepository) {
+        this.candidateRepository = candidateRepository;
+        this.electionRepository = electionRepository;
+    }
 
     @Override
     public CandidateDTO addCandidate(CandidateDTO candidateDTO) {
