@@ -76,8 +76,7 @@ mvn spring-boot:run
 All secured endpoints require a valid JWT in the header:  
 `Authorization: Bearer <your-jwt-token>`
 ###  User (Authentication & Management)
-- POST `/api/auth/login` Authenticate a user (admin or voter) and receive a JWT.
-- POST `/api/auth/register`register voter to system.(Admin only)
+- POST `/users/register`Authenticate a user (admin or voter) and receive a JWT.
 ### 🗳️ Election
 - POST `/api/admin/elections` Create a new election with a voting time window. (Admin only)
 - POST `/api/admin/voters/assign` Assign a registered voter to an election. (Admin only)
