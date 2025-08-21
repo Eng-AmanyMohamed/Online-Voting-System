@@ -28,14 +28,14 @@ public class ElectionController {
     //Admin
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<Election> createElection(@Valid @RequestBody ElectionDTO electionDTO) {
         Election savedElection = electionService.createElection(electionDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedElection);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<Election> updateElection(@PathVariable Long id,
                                                    @Valid @RequestBody ElectionDTO electionDTO) {
         Election updatedElection = electionService.updateElection(id, electionDTO);
@@ -43,14 +43,14 @@ public class ElectionController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<Void> deleteElection(@PathVariable Long id) {
         electionService.deleteElection(id);
         return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/{id}/end-time")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<Election> updateElectionEndTime(@PathVariable Long id,
                                                           @RequestParam LocalDateTime newEndTime) {
         Election updatedElection = electionService.updateElectionEndTime(id, newEndTime);
@@ -60,7 +60,7 @@ public class ElectionController {
     // Admin & Voter
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN','VOTER')")
+    @PreAuthorize("hasAnyRole('Admin','Voter')")
     public ResponseEntity<Election> getElectionById(@PathVariable Long id) {
         return electionService.getElectionById(id)
                 .map(ResponseEntity::ok)
@@ -68,31 +68,31 @@ public class ElectionController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN','VOTER')")
+    @PreAuthorize("hasAnyRole('Admin','Voter')")
     public ResponseEntity<List<Election>> getAllElections() {
         return ResponseEntity.ok(electionService.getAllElections());
     }
 
     @GetMapping("/active")
-    @PreAuthorize("hasAnyRole('ADMIN','VOTER')")
+    @PreAuthorize("hasAnyRole('Admin','Voter')")
     public ResponseEntity<List<Election>> getActiveElections() {
         return ResponseEntity.ok(electionService.getActiveElections());
     }
 
     @GetMapping("/upcoming")
-    @PreAuthorize("hasAnyRole('ADMIN','VOTER')")
+    @PreAuthorize("hasAnyRole('Admin','Voter')")
     public ResponseEntity<List<Election>> getUpcomingElections() {
         return ResponseEntity.ok(electionService.getUpcomingElections());
     }
 
     @GetMapping("/completed")
-    @PreAuthorize("hasAnyRole('ADMIN','VOTER')")
+    @PreAuthorize("hasAnyRole('Admin','Voter')")
     public ResponseEntity<List<Election>> getCompletedElections() {
         return ResponseEntity.ok(electionService.getCompletedElections());
     }
 
     @GetMapping("/current")
-    @PreAuthorize("hasAnyRole('ADMIN','VOTER')")
+    @PreAuthorize("hasAnyRole('Admin','Voter')")
     public ResponseEntity<Election> getCurrentActiveElection() {
         return electionService.getCurrentActiveElection()
                 .map(ResponseEntity::ok)
@@ -100,7 +100,7 @@ public class ElectionController {
                         .body(null));
     }
     @GetMapping("/{id}/results")
-    @PreAuthorize("hasAnyRole('ADMIN','VOTER')")
+    @PreAuthorize("hasAnyRole('Admin','Voter')")
     public ResponseEntity<Map<String, Object>> getElectionResults(@PathVariable Long id) {
         try {
             Map<String, Object> results = electionService.getElectionResults(id);
